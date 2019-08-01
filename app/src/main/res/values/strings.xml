@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">locationapp</string>
+    <string name="latitude_label">latitude</string>
+    <string name="longitude_label">longitude</string>
+</resources>
