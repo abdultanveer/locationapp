@@ -10,7 +10,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,10 +39,16 @@ public class MainActivity extends AppCompatActivity {
     private String mLongitudeLabel;
     private TextView mLatitudeText;
     private TextView mLongitudeText;
+    private AddressResultReceiver mResultReceiver;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mResultReceiver = new AddressResultReceiver(new Handler());
+
 
         mLatitudeLabel = getResources().getString(R.string.latitude_label);
         mLongitudeLabel = getResources().getString(R.string.longitude_label);
@@ -145,5 +154,37 @@ public class MainActivity extends AppCompatActivity {
         startService(myIntent);//1
     }
 
+    public void clickListener(View view) {
+        startIntentService();
+    }
+
+
+    private class AddressResultReceiver extends ResultReceiver {
+        AddressResultReceiver(Handler handler) {
+            super(handler);
+        }
+
+        /**
+         *  Receives data sent from FetchAddressIntentService and updates the UI in MainActivity.
+         */
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {//4
+
+            // Display the address string or an error message sent from the intent service.
+            String mAddressOutput = resultData.getString(Constants.RESULT_DATA_KEY);
+            //displayAddressOutput();
+
+            // Show a toast message if an address was found.
+            if (resultCode == Constants.SUCCESS_RESULT) {
+                Toast.makeText(MainActivity.this, "address found", Toast.LENGTH_SHORT).show();
+                //showToast(getString(R.string.address_found));
+            }
+
+            TextView postalTextView = findViewById(R.id.textViewpostal);
+            postalTextView.setText(mAddressOutput);
+            // Reset. Enable the Fetch Address button and stop showing the progress bar.
+
+        }
+    }
 
 }

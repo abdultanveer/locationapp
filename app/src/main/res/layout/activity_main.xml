@@ -36,8 +36,20 @@
         android:layout_marginLeft="41dp"
         android:layout_marginTop="198dp"
         android:background="@drawable/button_selector"
-        android:text="Button"
+        android:onClick="clickListener"
+        android:text="get postal address"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewpostal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="143dp"
+        android:layout_marginLeft="143dp"
+        android:layout_marginBottom="321dp"
+        android:text="postal address"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
