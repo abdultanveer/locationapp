@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -31,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
      * Represents a geographical location.
      */
     protected Location mLastLocation;
-
     private String mLatitudeLabel;
     private String mLongitudeLabel;
     private TextView mLatitudeText;
@@ -124,4 +124,26 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    /**
+     * Creates an intent, adds location data to it as an extra, and starts the intent service for
+     * fetching an address.
+     */
+    private void startIntentService() {
+        // Create an intent for passing to the intent service responsible for fetching the address.
+        Intent myIntent = new Intent(this, FetchAddressIntentService.class);
+
+        // Pass the result receiver as an extra to the service.
+        myIntent.putExtra(Constants.RECEIVER, mResultReceiver);
+
+        // Pass the location data as an extra to the service.
+        myIntent.putExtra(Constants.LOCATION_DATA_EXTRA, mLastLocation);
+
+        // Start the service. If the service isn't already running, it is instantiated and started
+        // (creating a process for it if needed); if it is running then it remains running. The
+        // service kills itself automatically once all intents are processed.
+        startService(myIntent);//1
+    }
+
+
 }
